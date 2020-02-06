@@ -14,11 +14,14 @@ class MainWindow(wx.Frame):
         wx.Frame.__init__(self,None,title="Tidy Cobra", size=(500,500))
         panel = wx.Panel(self)
 
+        ''' Logo '''
+        img_logo = wx.Image("../Resources/logo.png", wx.BITMAP_TYPE_ANY)
+        sb1 = wx.StaticBitmap(panel, -1, wx.BitmapFromImage(img_logo))
         ''' Text labels '''
         text_step1 = wx.StaticText(panel, label = "Step 1: Choose your Downloads folder")
         text_step2 = wx.StaticText(panel, label = "Step 2: Set up destination folders & extensions")
         text_step3 = wx.StaticText(panel, label= "Step 3: Save/Run")
-        text_logo = wx.StaticText(panel, label = "TidyCobra")
+
 
         ''' Dividers '''
         sizer_main = wx.BoxSizer(wx.VERTICAL) # main sizer
@@ -38,7 +41,7 @@ class MainWindow(wx.Frame):
 
 
         ''' Layout '''
-        sizer_main.Add(text_logo, wx.SizerFlags().Border(wx.TOP | wx.BOTTOM, 10).Center())
+        sizer_main.Add(sb1, wx.SizerFlags().Border(wx.TOP | wx.BOTTOM, 20).Center())
 
         ''' Step 1 : Select download folder'''
         sizer_main.Add(text_step1, wx.SizerFlags().Border(wx.TOP | wx.LEFT, 10))
