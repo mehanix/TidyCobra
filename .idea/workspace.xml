@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e50750a-d0b3-432e-9283-9f66c09561de" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Resources/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/logo.xcf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/add_rule_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/banner.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/banner.xcf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/main_window.py" afterDir="false" />
     </list>
@@ -20,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="mehanix" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1XR93hCn1UHO4u7BFYP3NBFrHx5" />
@@ -185,7 +191,9 @@
       <workItem from="1581007528090" duration="1576000" />
       <workItem from="1581009591357" duration="602000" />
       <workItem from="1581011515462" duration="692000" />
-      <workItem from="1581013885764" duration="8566000" />
+      <workItem from="1581013885764" duration="8682000" />
+      <workItem from="1581096208047" duration="619000" />
+      <workItem from="1581097926630" duration="4461000" />
     </task>
     <servers />
   </component>
@@ -196,35 +204,39 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1793" height="195" key="GridCell.Tab.0.bottom" timestamp="1581024278553">
+    <state x="524" y="87" width="908" height="926" key="CommitChangelistDialog2" timestamp="1581102436248">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1793" height="195" key="GridCell.Tab.0.bottom/47.25.1873.1055@47.25.1873.1055" timestamp="1581024278553" />
-    <state width="1793" height="195" key="GridCell.Tab.0.center" timestamp="1581024278553">
+    <state x="524" y="87" width="908" height="926" key="CommitChangelistDialog2/47.25.1873.1055@47.25.1873.1055" timestamp="1581102436248" />
+    <state width="1817" height="195" key="GridCell.Tab.0.bottom" timestamp="1581102393261">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1793" height="195" key="GridCell.Tab.0.center/47.25.1873.1055@47.25.1873.1055" timestamp="1581024278553" />
-    <state width="1793" height="195" key="GridCell.Tab.0.left" timestamp="1581024278552">
+    <state width="1817" height="195" key="GridCell.Tab.0.bottom/47.25.1873.1055@47.25.1873.1055" timestamp="1581102393261" />
+    <state width="1817" height="195" key="GridCell.Tab.0.center" timestamp="1581102393259">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1793" height="195" key="GridCell.Tab.0.left/47.25.1873.1055@47.25.1873.1055" timestamp="1581024278552" />
-    <state width="1793" height="195" key="GridCell.Tab.0.right" timestamp="1581024278553">
+    <state width="1817" height="195" key="GridCell.Tab.0.center/47.25.1873.1055@47.25.1873.1055" timestamp="1581102393259" />
+    <state width="1817" height="195" key="GridCell.Tab.0.left" timestamp="1581102393258">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1793" height="195" key="GridCell.Tab.0.right/47.25.1873.1055@47.25.1873.1055" timestamp="1581024278553" />
+    <state width="1817" height="195" key="GridCell.Tab.0.left/47.25.1873.1055@47.25.1873.1055" timestamp="1581102393258" />
+    <state width="1817" height="195" key="GridCell.Tab.0.right" timestamp="1581102393260">
+      <screen x="47" y="25" width="1873" height="1055" />
+    </state>
+    <state width="1817" height="195" key="GridCell.Tab.0.right/47.25.1873.1055@47.25.1873.1055" timestamp="1581102393260" />
     <state x="437" y="195" key="SettingsEditor" timestamp="1581016750416">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
     <state x="437" y="195" key="SettingsEditor/47.25.1873.1055@47.25.1873.1055" timestamp="1581016750416" />
-    <state x="638" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1581013885737">
+    <state x="638" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1581097926692">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state x="638" y="380" key="com.intellij.ide.util.TipDialog/47.25.1873.1055@47.25.1873.1055" timestamp="1581013885737" />
+    <state x="638" y="380" key="com.intellij.ide.util.TipDialog/47.25.1873.1055@47.25.1873.1055" timestamp="1581097926692" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TidyConda2$app.coverage" NAME="app Coverage Results" MODIFIED="1581010105161" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TidyConda2$TidyCobra.coverage" NAME="TidyCobra Coverage Results" MODIFIED="1581010111331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TidyConda2$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1581024278543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI" />
+    <SUITE FILE_PATH="coverage/TidyConda2$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1581101916003" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI" />
     <SUITE FILE_PATH="coverage/TidyConda2$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1581009854199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TidyConda2$test.coverage" NAME="test Coverage Results" MODIFIED="1580998880141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
