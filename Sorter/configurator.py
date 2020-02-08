@@ -10,7 +10,7 @@ class Configurator():
         ### Save config ###
         if message == "save_config":
             print("received=",arg2)
-            with open('../Sorter/config.json', 'w') as f:
+            with open('../Sorter/config.json', 'w+') as f:
                 json.dump(arg2,f)
             print("done")
         ### Load config ###
