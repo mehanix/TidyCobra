@@ -7,7 +7,7 @@ from Sorter import sorter as sorter_tool
 import os.path
 
 class MainWindow(wx.Frame):
-    ''' Fereastra principala (sper eu ca si singura) '''
+    ''' Fereastra principala '''
     config = config_tool.Configurator()
 
     def getSetupData(self):

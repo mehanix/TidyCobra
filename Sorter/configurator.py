@@ -1,6 +1,5 @@
 ''' Manipulates configuration files for TidyCobra '''
 from wx.lib.pubsub import pub
-import wx
 import json
 class Configurator():
 
