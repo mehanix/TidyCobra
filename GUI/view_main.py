@@ -2,15 +2,17 @@ import wx
 import wx.dataview
 from GUI import view_addrule
 from wx.lib.pubsub import pub
-from Sorter import configurator as config
+from Sorter import configurator as config_tool
+from Sorter import sorter as sorter_tool
+import os.path
 
 class MainWindow(wx.Frame):
     ''' Fereastra principala (sper eu ca si singura) '''
-    config = config.Configurator()
+    config = config_tool.Configurator()
 
     def getSetupData(self):
-        data = []
-        data.append(self.textbox_download_folder.GetValue())
+        data = dict()
+        data["path_downloads"]=self.textbox_download_folder.GetValue()
         rules = []
         for row in range(self.dataview.GetItemCount()):
             temp_row = []
@@ -19,7 +21,7 @@ class MainWindow(wx.Frame):
 
             rules.append(temp_row)
 
-        data.append(rules)
+        data["rules"]=rules
         print(data)
         return data
 
@@ -45,9 +47,13 @@ class MainWindow(wx.Frame):
     def OnBtnSaveConfig(self, event):
         data = self.getSetupData()
         pub.sendMessage("configuratorListener", message="save_config", arg2=data)
-        return -1  # not implemented
+        self.SetStatusText("Configuration saved!")
+
 
     def OnBtnRunManual(self, event):
+        sorter = sorter_tool.Sorter()
+
+
         return -1  # not implemented
 
     def OnBtnRunAuto(self, event):
@@ -161,6 +167,17 @@ class MainWindow(wx.Frame):
         self.SetMinSize(self.GetSize())
         self.SetMaxSize(self.GetSize())
         self.Center()
+
+        self.default_config_path = '../Sorter/config.json'
+        if os.path.isfile(self.default_config_path):
+            config_display_data = self.config.load_config(self.default_config_path)
+            self.textbox_download_folder.SetValue(config_display_data["path_downloads"])
+            for rule in config_display_data["rules"]:
+                print(rule)
+                self.dataview.AppendItem(rule)
+                self.SetStatusText("Loaded pre-existent configuration. Ready!")
+        else:
+            self.SetStatusText("Ready!")
         self.Show(True)
 
 

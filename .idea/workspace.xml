@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e50750a-d0b3-432e-9283-9f66c09561de" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GUI/view_addrule.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GUI/view_main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sorter/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sorter/config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sorter/sorter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/add_rule_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sorter/configurator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/main_window.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/view_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/view_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sorter/configurator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sorter/configurator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,28 +80,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="TidyConda2" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="configurator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TidyConda2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -116,6 +94,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Sorter/configurator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="sorter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TidyConda2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Sorter" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Sorter/sorter.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -171,10 +171,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.view_main" />
+        <item itemvalue="Python.sorter" />
         <item itemvalue="Python.configurator" />
         <item itemvalue="Python.view_addrule" />
         <item itemvalue="Python.TidyCobra" />
-        <item itemvalue="Python.app" />
       </list>
     </recent_temporary>
   </component>
@@ -196,7 +196,7 @@
       <workItem from="1581013885764" duration="8682000" />
       <workItem from="1581096208047" duration="619000" />
       <workItem from="1581097926630" duration="11152000" />
-      <workItem from="1581169689093" duration="13014000" />
+      <workItem from="1581169689093" duration="16533000" />
     </task>
     <servers />
   </component>
@@ -217,25 +217,25 @@
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
     <state x="524" y="87" width="908" height="926" key="CommitChangelistDialog2/47.25.1873.1055@47.25.1873.1055" timestamp="1581102436248" />
-    <state width="1817" height="151" key="GridCell.Tab.0.bottom" timestamp="1581190191144">
+    <state width="1817" height="207" key="GridCell.Tab.0.bottom" timestamp="1581193686098">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1817" height="151" key="GridCell.Tab.0.bottom/47.25.1873.1055@47.25.1873.1055" timestamp="1581190191144" />
+    <state width="1817" height="207" key="GridCell.Tab.0.bottom/47.25.1873.1055@47.25.1873.1055" timestamp="1581193686098" />
     <state width="1817" height="195" key="GridCell.Tab.0.bottom/47.30.1873.1050@47.30.1873.1050" timestamp="1581107982864" />
-    <state width="1817" height="151" key="GridCell.Tab.0.center" timestamp="1581190191143">
+    <state width="1817" height="207" key="GridCell.Tab.0.center" timestamp="1581193686098">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1817" height="151" key="GridCell.Tab.0.center/47.25.1873.1055@47.25.1873.1055" timestamp="1581190191143" />
+    <state width="1817" height="207" key="GridCell.Tab.0.center/47.25.1873.1055@47.25.1873.1055" timestamp="1581193686098" />
     <state width="1817" height="195" key="GridCell.Tab.0.center/47.30.1873.1050@47.30.1873.1050" timestamp="1581107982863" />
-    <state width="1817" height="151" key="GridCell.Tab.0.left" timestamp="1581190191143">
+    <state width="1817" height="207" key="GridCell.Tab.0.left" timestamp="1581193686097">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1817" height="151" key="GridCell.Tab.0.left/47.25.1873.1055@47.25.1873.1055" timestamp="1581190191143" />
+    <state width="1817" height="207" key="GridCell.Tab.0.left/47.25.1873.1055@47.25.1873.1055" timestamp="1581193686097" />
     <state width="1817" height="195" key="GridCell.Tab.0.left/47.30.1873.1050@47.30.1873.1050" timestamp="1581107982863" />
-    <state width="1817" height="151" key="GridCell.Tab.0.right" timestamp="1581190191144">
+    <state width="1817" height="207" key="GridCell.Tab.0.right" timestamp="1581193686098">
       <screen x="47" y="25" width="1873" height="1055" />
     </state>
-    <state width="1817" height="151" key="GridCell.Tab.0.right/47.25.1873.1055@47.25.1873.1055" timestamp="1581190191144" />
+    <state width="1817" height="207" key="GridCell.Tab.0.right/47.25.1873.1055@47.25.1873.1055" timestamp="1581193686098" />
     <state width="1817" height="195" key="GridCell.Tab.0.right/47.30.1873.1050@47.30.1873.1050" timestamp="1581107982864" />
     <state x="437" y="195" key="SettingsEditor" timestamp="1581016750416">
       <screen x="47" y="25" width="1873" height="1055" />
@@ -262,6 +262,7 @@
     <SUITE FILE_PATH="coverage/TidyConda2$addrulewindow.coverage" NAME="addrulewindow Coverage Results" MODIFIED="1581106491999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI" />
     <SUITE FILE_PATH="coverage/TidyConda2$configurator.coverage" NAME="configurator Coverage Results" MODIFIED="1581187918783" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Sorter" />
     <SUITE FILE_PATH="coverage/TidyConda2$test.coverage" NAME="test Coverage Results" MODIFIED="1580998880141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TidyConda2$mainwindow.coverage" NAME="view_main Coverage Results" MODIFIED="1581190191124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI" />
+    <SUITE FILE_PATH="coverage/TidyConda2$sorter.coverage" NAME="sorter Coverage Results" MODIFIED="1581192746602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Sorter" />
+    <SUITE FILE_PATH="coverage/TidyConda2$mainwindow.coverage" NAME="view_main Coverage Results" MODIFIED="1581193686088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI" />
   </component>
 </project>
