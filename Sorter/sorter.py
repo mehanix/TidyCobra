@@ -9,7 +9,7 @@ class Sorter:
                 os.mkdir(path_destination)
             for extension in extensions:
                 for file_path in glob.glob(self.path_downloads+"/*"+extension):
-                    os.system(f'move {file_path} {self.path_destination}')
+                    os.system(f'move {file_path} {path_destination}')
             print("done!")
 
 
