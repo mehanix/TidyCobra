@@ -1,26 +1,16 @@
-'''Handles sorting logic for TidyCobra'''
 from Sorter import configurator as config_module
-import glob, os, shutil
-from datetime import datetime
+import glob, os
+
 class Sorter:
 
-    def fix_duplicate(self,path):
-        # hacky way to handle path duplication
-        new_name = path.split(".")
-        new_name[0] += "_duplicate" + str(int(datetime.timestamp(datetime.now()))%1000000)
-        return ".".join(new_name)
     def sort(self,path_destination,extensions):
-        for extension in extensions:
-            print(extension)
-            for file in glob.glob("*"+extension):
-                print(file)
-                current_file_path = self.path_downloads+"/"+file
-                new_file_path = path_destination+"/"+file
-                if os.path.isfile(new_file_path):
-                    new_file_path = self.fix_duplicate(new_file_path)
-
-                shutil.move(current_file_path,new_file_path)
-    print("done!")
+        if os.path.exists(self.path_downloads):
+            if not os.path.exists(path_destination):
+                os.mkdir(path_destination)
+            for extension in extensions:
+                for file_path in glob.glob(self.path_downloads+"/*"+extension):
+                    os.system(f'move {file_path} {self.path_destination}')
+            print("done!")
 
 
     def __init__(self):
