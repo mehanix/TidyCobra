@@ -4,8 +4,8 @@ from GUI import view_addrule
 from pubsub import pub
 from Sorter import configurator as config_tool
 from Sorter import sorter as sorter_tool
-import os.path
-import datetime
+from pathlib import Path
+import os
 
 class MainWindow(wx.Frame):
     ''' Main window '''
@@ -23,6 +23,7 @@ class MainWindow(wx.Frame):
             rules.append(temp_row)
 
         data["rules"] = rules
+        data["autostart"] = self.AutoStart
         print(data)
         return data
 
@@ -49,11 +50,37 @@ class MainWindow(wx.Frame):
         self.SetStatusText("Configuration saved!")
 
     def OnBtnRunManual(self, event):
-        sorter = sorter_tool.Sorter()
-        return -1  # not implemented
+        if not self.schedule:
+            self.timer.Start(5000)
+            self.btn_run_manual.SetLabel("Pause sorter")
+            self.schedule = True
+        else:
+            self.timer.Stop()
+            self.btn_run_manual.SetLabel("Run sorter")
+            self.schedule = False
+
 
     def OnBtnRunAuto(self, event):
-        return -1  # not implemented
+        data = self.config.load_config(self.default_config_path)
+        startup_path = str(Path().home()) + "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+        current_path = os.getcwd()
+        if self.AutoStart:
+            self.btn_run_auto.SetLabel("Add to startup")
+            self.AutoStart = False
+            data["autostart"] = self.AutoStart
+            if os.path.isfile(startup_path+"\TidyCobraStartUp.bat"):
+                os.remove(startup_path+"\TidyCobraStartUp.bat")
+            pub.sendMessage("configuratorListener", message="save_config", arg2=data)
+        else:
+            self.btn_run_auto.SetLabel("Remove from startup")
+            self.AutoStart = True
+            data["autostart"] = self.AutoStart
+            if not os.path.isfile(startup_path+"\TidyCobraStartUp.bat"):
+                file  = open(startup_path+"\TidyCobraStartUp.bat", 'x')
+                file.write("cd "+ current_path +"\npython "+current_path+"\TidyCobra.py")
+                file.close()
+            pub.sendMessage("configuratorListener", message="save_config", arg2=data)
+        
     
     def OnTimer(self, event):
         sorter = sorter_tool.Sorter()
@@ -68,6 +95,9 @@ class MainWindow(wx.Frame):
         self.payload = []
         self.SetMinSize(self.GetSize())
         self.panel = wx.Panel(self)
+        self.schedule = False
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
         self.CreateStatusBar()
         self.SetStatusText("Ready!")
         pub.subscribe(self.listener_addrule, "addRuleListener")
@@ -111,7 +141,7 @@ class MainWindow(wx.Frame):
         self.btn_run_manual = wx.Button(self.panel, label="Run sorter")
         self.btn_run_manual.Bind(wx.EVT_BUTTON, self.OnBtnRunManual)
 
-        self.btn_run_auto = wx.Button(self.panel, label="Run on startup")
+        self.btn_run_auto = wx.Button(self.panel, label="Add to startup")
         self.btn_run_auto.Bind(wx.EVT_BUTTON, self.OnBtnRunAuto)
 
         ''' Textboxes '''
@@ -162,15 +192,15 @@ class MainWindow(wx.Frame):
                 print(rule)
                 self.listener_addrule(rule)
                 self.SetStatusText("Loaded pre-existent configuration. Ready!")
+            self.AutoStart = config_display_data["autostart"]
+            if self.AutoStart:
+                self.btn_run_auto.SetLabel("Remove from startup")
+            else:
+                self.btn_run_auto.SetLabel("Add to startup")
         else:
             self.SetStatusText("Ready!")
         self.Show(True)
 
-        ''' Scheaduler '''
-
-        self.timer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
-        self.timer.Start(10000)
 
 def render_GUI():
     app = wx.App()
