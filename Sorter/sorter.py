@@ -19,12 +19,5 @@ class Sorter:
         configurator = config_module.Configurator()
         self.config = configurator.load_config("Sorter/config.json")
         self.path_downloads = self.config["path_downloads"]
-        old_path = os.getcwd()
-        os.chdir(self.path_downloads)
-        print("path_dw:",self.path_downloads,"current dir",os.getcwd())
         for rule in self.config["rules"]:
-            path_destination = rule[0]
-            extensions = rule[1].split(' ')
-            print(path_destination, extensions)
-            self.sort(path_destination, extensions)
-        os.chdir(old_path)
+            self.sort(rule[0], rule[1:])
