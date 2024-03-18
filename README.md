@@ -17,7 +17,8 @@ TidyCobra is a Python-based utility that automates the sorting of downloaded fil
 ## Requirements
 
 - Python 3.x
-- wxPython (for GUI)
+- wxPython 4.2.1 (for GUI)
+- PyPubSub 4.0.3 (for GUI)
 
 ## Installation
 

@@ -1,27 +1,29 @@
 import wx
 import wx.dataview
 from GUI import view_addrule
-from wx.lib.pubsub import pub
+from pubsub import pub
 from Sorter import configurator as config_tool
 from Sorter import sorter as sorter_tool
-import os.path
+from pathlib import Path
+import os
 
 class MainWindow(wx.Frame):
-    ''' Fereastra principala '''
+    ''' Main window '''
     config = config_tool.Configurator()
 
     def getSetupData(self):
         data = dict()
-        data["path_downloads"]=self.textbox_download_folder.GetValue()
+        data["path_downloads"] = self.textbox_download_folder.GetValue()
         rules = []
         for row in range(self.dataview.GetItemCount()):
             temp_row = []
             for col in range(2):
-                temp_row.append(self.dataview.GetValue(row,col))
+                temp_row.append(self.dataview.GetTextValue(row, col))
 
             rules.append(temp_row)
 
-        data["rules"]=rules
+        data["rules"] = rules
+        data["autostart"] = self.AutoStart
         print(data)
         return data
 
@@ -39,8 +41,6 @@ class MainWindow(wx.Frame):
         selected_item = self.dataview.GetSelectedRow()
         self.dataview.DeleteItem(selected_item)
 
-
-
     def OnBtnImportConfig(self, event):
         return -1  # not implemented
 
@@ -49,39 +49,62 @@ class MainWindow(wx.Frame):
         pub.sendMessage("configuratorListener", message="save_config", arg2=data)
         self.SetStatusText("Configuration saved!")
 
-
     def OnBtnRunManual(self, event):
-        sorter = sorter_tool.Sorter()
+        if not self.schedule:
+            self.timer.Start(5000)
+            self.btn_run_manual.SetLabel("Pause sorter")
+            self.schedule = True
+        else:
+            self.timer.Stop()
+            self.btn_run_manual.SetLabel("Run sorter")
+            self.schedule = False
 
-
-        return -1  # not implemented
 
     def OnBtnRunAuto(self, event):
-        return -1  # not implemented
-
+        data = self.config.load_config(self.default_config_path)
+        startup_path = str(Path().home()) + "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+        current_path = os.getcwd()
+        if self.AutoStart:
+            self.btn_run_auto.SetLabel("Add to startup")
+            self.AutoStart = False
+            data["autostart"] = self.AutoStart
+            if os.path.isfile(startup_path+"\TidyCobraStartUp.bat"):
+                os.remove(startup_path+"\TidyCobraStartUp.bat")
+            pub.sendMessage("configuratorListener", message="save_config", arg2=data)
+        else:
+            self.btn_run_auto.SetLabel("Remove from startup")
+            self.AutoStart = True
+            data["autostart"] = self.AutoStart
+            if not os.path.isfile(startup_path+"\TidyCobraStartUp.bat"):
+                file  = open(startup_path+"\TidyCobraStartUp.bat", 'x')
+                file.write("cd "+ current_path +"\npython "+current_path+"\TidyCobra.py")
+                file.close()
+            pub.sendMessage("configuratorListener", message="save_config", arg2=data)
+        
+    
+    def OnTimer(self, event):
+        sorter = sorter_tool.Sorter()
 
     '''Listeners!'''
     def listener_addrule(self, message, arg2=None):
         self.dataview.AppendItem(message)
 
-
-
     def __init__(self):
-        wx.Frame.__init__(self, None, title="Tidy Cobra", style=wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER
-                                                                                           | wx.MAXIMIZE_BOX))
+        super().__init__(None, title="Tidy Cobra", style=wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX))
 
         self.payload = []
         self.SetMinSize(self.GetSize())
         self.panel = wx.Panel(self)
+        self.schedule = False
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
         self.CreateStatusBar()
         self.SetStatusText("Ready!")
         pub.subscribe(self.listener_addrule, "addRuleListener")
 
-
-
         ''' Logo '''
-        self.img_logo = wx.Image("../Resources/logo.png", wx.BITMAP_TYPE_ANY)
-        self.sb1 = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(self.img_logo))
+        self.img_logo = wx.Image("Resources/logo.png", wx.BITMAP_TYPE_ANY)
+        self.sb1 = wx.StaticBitmap(self.panel, -1, wx.Bitmap(self.img_logo))
         ''' Text labels '''
 
         self.text_step1 = wx.StaticText(self.panel, label="Step 1: Choose your Downloads folder")
@@ -118,7 +141,7 @@ class MainWindow(wx.Frame):
         self.btn_run_manual = wx.Button(self.panel, label="Run sorter")
         self.btn_run_manual.Bind(wx.EVT_BUTTON, self.OnBtnRunManual)
 
-        self.btn_run_auto = wx.Button(self.panel, label="Run on startup")
+        self.btn_run_auto = wx.Button(self.panel, label="Add to startup")
         self.btn_run_auto.Bind(wx.EVT_BUTTON, self.OnBtnRunAuto)
 
         ''' Textboxes '''
@@ -126,18 +149,14 @@ class MainWindow(wx.Frame):
 
         ''' DataView '''
         self.dataview = wx.dataview.DataViewListCtrl(self.panel, size=(200, 200))
-
         self.dataview.AppendTextColumn("Folder Path", width=225)
         self.dataview.AppendTextColumn("Extensions")
-
-
 
         ''' Layout '''
         self.sizer_main.Add(self.sb1, wx.SizerFlags().Border(wx.TOP | wx.BOTTOM, 20).Center())
 
         ''' Step 1 : Select download folder'''
         self.sizer_main.Add(self.text_step1, wx.SizerFlags().Border(wx.TOP | wx.LEFT, 10))
-
         self.hbox_downloads.Add(self.textbox_download_folder, proportion=1)
         self.hbox_downloads.Add(self.btn_download_folder, wx.SizerFlags().Border(wx.LEFT | wx.RIGHT, 5))
         self.sizer_main.Add(self.hbox_downloads, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP | wx.BOTTOM, border=10)
@@ -152,13 +171,10 @@ class MainWindow(wx.Frame):
 
         ''' Step 3: Save/Run '''
         self.sizer_main.Add(self.text_step3, wx.SizerFlags().Border(wx.TOP | wx.LEFT | wx.BOTTOM, 10))
-
         self.hbox_save_controls.Add(self.btn_save_config, wx.SizerFlags().Border(wx.RIGHT, 2).Proportion(1))
         self.hbox_save_controls.Add(self.btn_run_manual, wx.SizerFlags().Proportion(1).Border(wx.LEFT | wx.RIGHT, 2))
         self.hbox_save_controls.Add(self.btn_run_auto, wx.SizerFlags().Proportion(1).Border(wx.LEFT, 2))
         self.sizer_main.Add(self.hbox_save_controls, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=10)
-
-        self.panel.SetSizer(self.sizer_main)
 
         self.panel.SetSizer(self.sizer_main)
         self.Center()
@@ -168,14 +184,19 @@ class MainWindow(wx.Frame):
         self.SetMaxSize(self.GetSize())
         self.Center()
 
-        self.default_config_path = '../Sorter/config.json'
+        self.default_config_path = 'Sorter/config.json'
         if os.path.isfile(self.default_config_path):
             config_display_data = self.config.load_config(self.default_config_path)
             self.textbox_download_folder.SetValue(config_display_data["path_downloads"])
             for rule in config_display_data["rules"]:
                 print(rule)
-                self.dataview.AppendItem(rule)
+                self.listener_addrule(rule)
                 self.SetStatusText("Loaded pre-existent configuration. Ready!")
+            self.AutoStart = config_display_data["autostart"]
+            if self.AutoStart:
+                self.btn_run_auto.SetLabel("Remove from startup")
+            else:
+                self.btn_run_auto.SetLabel("Add to startup")
         else:
             self.SetStatusText("Ready!")
         self.Show(True)
@@ -185,6 +206,3 @@ def render_GUI():
     app = wx.App()
     frame = MainWindow()
     app.MainLoop()
-
-
-render_GUI()
