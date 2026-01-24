@@ -24,10 +24,14 @@ class MainWindow(wx.Frame):
 
         selectedItem:int = self.dataView.GetSelectedRow()
         selectedItem:int = self.dataView.GetSelectedRow()
-        if 0 <= selectedItem <= len(self.config.rulesList[0]["destinationFolders"]):
-            removeRuleWindow = viewRemove.RemoveRule(selectedItem)
+        rules_list = self.config.rulesList[0]["destinationFolders"]
+        if 0 <= selectedItem <= len(rules_list):
+            # Get the selected to be removed rule's data for display in the confirmation dialog
+            ruleData = rules_list[selectedItem]
+            removeRuleWindow = viewRemove.RemoveRule(selectedItem, ruleData)
             removeRuleWindow.Show()
         else:
+            wx.MessageBox("Please select a folder to remove!","Error",wx.OK| wx.ICON_WARNING)
             self.SetStatusText("No selected item.")
 
     def onBtnModifyItem(self, event) -> None:
@@ -37,6 +41,7 @@ class MainWindow(wx.Frame):
             modifyRuleWindow = viewModifyRule.ModifyRuleWindow(selectedItem,self.config.rulesList[0]["destinationFolders"][selectedItem])
             modifyRuleWindow.Show()
         else:
+            wx.MessageBox("Please select a rule to modify!","Error",wx.OK|wx.ICON_WARNING)
             self.SetStatusText("No selected item.")
 
     def onBtnRunManual(self, event) -> None:
@@ -109,10 +114,10 @@ class MainWindow(wx.Frame):
 
     def updateStatusLabel(self) -> None:
         if self.config.isIntervalRunning:
-            self.lblStatus.SetLabel("Background: ON")
+            self.lblStatus.SetLabel("Background Sorting: ON")
             self.lblStatus.SetForegroundColour(wx.Colour(0, 150, 0))
         else:
-            self.lblStatus.SetLabel("Background: OFF")
+            self.lblStatus.SetLabel("Background Sorting: OFF")
             self.lblStatus.SetForegroundColour(wx.Colour(200, 0, 0))
         self.lblStatus.Refresh()
 
@@ -121,14 +126,29 @@ class MainWindow(wx.Frame):
         self.panel.DestroyChildren()
         if hasattr(self, "timer"):
             self.timer.Stop()
-
+            
         ''' Text labels '''
         self.textStep1 = wx.StaticText(self.panel, label="Step 1: Choose your Downloads folder")
         self.textStep2 = wx.StaticText(self.panel, label="Step 2: Set up destination folders and their extensions")
         self.textStep3 = wx.StaticText(self.panel, label="Step 3: Run")
+        headerFont = wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        self.textStep1.SetFont(headerFont)
+        self.textStep2.SetFont(headerFont)
+        self.textStep3.SetFont(headerFont)
 
         ''' Dividers '''
         self.sizerMain = wx.BoxSizer(wx.VERTICAL)  # main sizer
+        
+        ''' Banner Image '''
+        try:
+            image = wx.Image("Assets/banner.png", wx.BITMAP_TYPE_PNG)
+            image = image.Scale(600, 100, wx.IMAGE_QUALITY_HIGH)
+            bannerBitmap = wx.Bitmap(image)
+            self.bannerCtrl = wx.StaticBitmap(self.panel, bitmap=bannerBitmap)
+            self.sizerMain.Add(self.bannerCtrl, flag=wx.TOP |  wx.ALIGN_CENTER_HORIZONTAL, border=10)
+        except Exception as e:
+            print("Could not load banner image:", e)
+        
 
         ''' Horizontal boxes '''
         self.hboxDownloads = wx.BoxSizer(wx.HORIZONTAL)
@@ -150,7 +170,7 @@ class MainWindow(wx.Frame):
 
         self.btnModifyItem = wx.Button(self.panel, label="Modify")
         self.btnModifyItem.Bind(wx.EVT_BUTTON, self.onBtnModifyItem)
-
+        
         if self.config.isIntervalRunning:
             self.timer = wx.Timer(self)
             self.Bind(wx.EVT_TIMER, self.onInterval, self.timer)
@@ -165,12 +185,23 @@ class MainWindow(wx.Frame):
         self.btnLoadConfig = wx.Button(self.panel, label="Load Config")
         self.btnLoadConfig.Bind(wx.EVT_BUTTON, self.onBtnLoadConfig)
         
+        ''' Hover Tooltips for buttons '''
+        self.btnAddItem.SetToolTip("Add a new destination folder and its extensions")
+        self.btnModifyItem.SetToolTip("Modify the selected destination folder and its extensions")
+        self.btnRemoveItem.SetToolTip("Remove the selected destination folder and its extensions")
+        self.btnInterval.SetToolTip("Toggle background sorting on/off")
+        self.btnRunManual.SetToolTip("Run sorting process once")
+        self.btnLoadConfig.SetToolTip("Load a configuration file")
+        
         ''' Textboxes '''
         self.textBoxDownloadFolder = wx.TextCtrl(self.panel)
         self.textBoxDownloadFolder.SetValue(self.config.rulesList[0]["sourceFolder"])
 
         ''' DataView '''
-        self.dataView = wx.dataview.DataViewListCtrl(self.panel, size=(400, 200))
+        # the data view to show rules list 
+        self.dataView = wx.dataview.DataViewListCtrl(self.panel, style=wx.dataview.DV_ROW_LINES | wx.dataview.DV_VERT_RULES 
+                                                     | wx.dataview.DV_HORIZ_RULES) #flexible size to fill space if user resizes window (before it was hardcoded and there would be empty spaces)
+        self.dataView.SetMinSize((400, 200)) # minimum size to avoid being too small
         self.dataView.AppendTextColumn("Folder Path", width=225)
         self.dataView.AppendTextColumn("Extensions")
         for destinationFolder in self.config.rulesList[0]["destinationFolders"]:
@@ -207,16 +238,14 @@ class MainWindow(wx.Frame):
         self.hboxSaveControls.Add(self.btnLoadConfig, wx.SizerFlags().Proportion(1).Border(wx.LEFT, 2))
         self.sizerMain.Add(self.hboxSaveControls, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=10)
 
+        self.updateStatusLabel() # moved this here to update after lblStatus creation so the label has text before we calculate its size and layout
         self.panel.SetSizer(self.sizerMain)
         self.sizerMain.Fit(self)
-        self.updateStatusLabel()
         self.Center()
 
     def __init__(self) -> None:
         wx.Frame.__init__(self, None, title="Tidy Cobra", style=wx.DEFAULT_FRAME_STYLE)
 
-        self.SetMinSize((200,300))
-        
         self.config = Config()
         self.sorter = Sorter(self.config)
 
@@ -226,11 +255,18 @@ class MainWindow(wx.Frame):
 
         self.panel = wx.Panel(self)
         self.CreateStatusBar()
+        ''' Set Icon '''
+        try:
+            icon = wx.Icon("Assets/SNAKE.png", wx.BITMAP_TYPE_PNG)
+            self.SetIcon(icon)
+        except Exception as e:
+            print("Could not load icon:", e)
+            
         self.Bind(wx.EVT_CLOSE, self.onClose)
         self.SetStatusText("Ready!")
         
         self.render()
-        
+        self.SetMinSize(self.GetBestSize()) # set minimum size to best size (obtained after render) so that the user cannot resize it to be too small
         self.Show(True)
 
 def renderGui():

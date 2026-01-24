@@ -12,17 +12,22 @@ class RemoveRule(wx.Frame):
 
         self.Destroy()
     
-    def __init__(self, id:int) -> None:
+    def __init__(self, id:int, ruleData:dict) -> None:
         wx.Frame.__init__(self, None, title="Remove rule", style=wx.DEFAULT_DIALOG_STYLE & ~wx.RESIZE_BORDER)
         self.panel = wx.Panel(self)
         self.id: int = id
+        
+        ''' Path and extensions info of the rule to be removed '''
+        folder_pth = ruleData["destinationPath"]
+        extensions = " ".join(ruleData["extensions"])
 
         '''Sizers'''
         self.vbox = wx.BoxSizer(wx.VERTICAL)
         self.operationsBox = wx.BoxSizer(wx.HORIZONTAL)
 
         '''Labels'''
-        self.message= wx.StaticText(self.panel, label="Are you sure you want to delete this role?")
+        infoText = f"You are about to remove the following rule:\n\nFolder Path: {folder_pth}\nExtensions: {extensions}\n\nAre you sure you want to proceed?"
+        self.message= wx.StaticText(self.panel, label=infoText)
         self.vbox.Add(self.message, flag=wx.LEFT|wx.RIGHT|wx.TOP, border=10)
 
         '''Buttons'''
@@ -41,6 +46,12 @@ class RemoveRule(wx.Frame):
         self.vbox.Layout()
         self.SetMinSize(self.GetSize())
         self.SetMaxSize(self.GetSize())
+        
+        try:
+            icon = wx.Icon("Assets/SNAKE.png", wx.BITMAP_TYPE_PNG)
+            self.SetIcon(icon)
+        except Exception as e:
+            print("Could not load icon:", e)
 
 
 
