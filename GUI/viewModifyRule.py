@@ -82,5 +82,10 @@ class ModifyRuleWindow(wx.Frame):
         self.vbox.Layout()
         self.SetMinSize(self.GetSize())
         self.SetMaxSize(self.GetSize())
+        try:
+            icon = wx.Icon("Assets/SNAKE.png", wx.BITMAP_TYPE_PNG)
+            self.SetIcon(icon)
+        except Exception as e:
+            print("Could not load icon:", e)
 
         self.Show(True)

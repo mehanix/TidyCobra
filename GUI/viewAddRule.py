@@ -13,6 +13,14 @@ class AddRuleWindow(wx.Frame):
         self.Destroy()
 
     def onBtnSave(self, event):
+        
+        # Validate inputs so that they are not empty (or whitespace only)
+        #If either field is empty, show a warning and do not proceed so the user cannot add incomplete rules
+        folder_pth = self.textboxFolderPath.GetValue().strip()
+        extensions_text = self.textboxExtensions.GetValue().strip()
+        if folder_pth == "" or extensions_text == "":
+            wx.MessageBox("Please fill in all fields.", "Error", wx.OK | wx.ICON_WARNING)
+            return
 
         extensions = [
             extension if extension.startswith(".") else "." + extension
@@ -76,5 +84,10 @@ class AddRuleWindow(wx.Frame):
         self.vbox.Layout()
         self.SetMinSize(self.GetSize())
         self.SetMaxSize(self.GetSize())
+        try:
+            icon = wx.Icon("Assets/SNAKE.png", wx.BITMAP_TYPE_PNG)
+            self.SetIcon(icon)
+        except Exception as e:
+            print("Could not load icon:", e)
 
         self.Show(True)
