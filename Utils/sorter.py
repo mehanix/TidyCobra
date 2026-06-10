@@ -3,6 +3,16 @@ from glob import glob
 from shutil import move
 from os import path
 
+
+def normalizeExtension(extension: str) -> str:
+    extension = extension.strip().lower()
+    if not extension:
+        return extension
+    if not extension.startswith("."):
+        extension = f".{extension}"
+    return extension
+
+
 def sortFolderByExtensions(rule: dict) -> dict:
 
     successCount:int = 0
@@ -32,6 +42,7 @@ def sortFolderByExtensions(rule: dict) -> dict:
     extensionsMapping:dict = {}
     for folder in rule["destinationFolders"]:
         for extension in folder["extensions"]:
+            extension = normalizeExtension(extension)
 
             if extension in extensionsMapping.keys():
                 continue
@@ -43,7 +54,7 @@ def sortFolderByExtensions(rule: dict) -> dict:
 
     files:list = glob(f'{sourceFolder}/*')
     for file in files:
-        fileExtension:str = "."+file.split('.')[-1]
+        fileExtension:str = normalizeExtension(path.splitext(file)[1])
 
         if not fileExtension in extensionsMapping.keys():
             continue
