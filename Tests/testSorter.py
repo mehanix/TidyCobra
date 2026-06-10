@@ -23,6 +23,7 @@ class TestSorter(unittest.TestCase):
         open(path.join(self.sourceDirectory, 'test3.jpg'), 'w').close()
         open(path.join(self.sourceDirectory, 'test4.pdf'), 'w').close()
         open(path.join(self.sourceDirectory, 'test5.xyz'), 'w').close()
+        open(path.join(self.sourceDirectory, 'test6.JPG'), 'w').close()
 
         self.testRule:dict = {
             "sourceFolder": self.sourceDirectory,
@@ -46,7 +47,7 @@ class TestSorter(unittest.TestCase):
         
         result:dict = sortFolderByExtensions(self.testRule)
 
-        self.assertEqual(result['successCount'],4)
+        self.assertEqual(result['successCount'],5)
         self.assertEqual(result['failCount'], 0)
         self.assertEqual(result['message'], 'Success!')
 
@@ -56,6 +57,28 @@ class TestSorter(unittest.TestCase):
         self.assertTrue(path.exists(path.join(self.secondDestinationDirectory, 'test4.pdf')))
 
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test5.xyz')))
+        self.assertTrue(path.exists(path.join(self.secondDestinationDirectory, 'test6.JPG')))
+
+    def test_ExtensionsWithoutLeadingDot(self) -> None:
+
+        rule:dict = {
+            "sourceFolder": self.sourceDirectory,
+            "destinationFolders": [
+                {
+                    "extensions": ["txt", "doc"],
+                    "destinationPath": self.firstDestinationDirectory
+                }
+            ]
+        }
+
+        result:dict = sortFolderByExtensions(rule)
+
+        self.assertEqual(result['successCount'], 2)
+        self.assertEqual(result['failCount'], 0)
+        self.assertEqual(result['message'], 'Success!')
+
+        self.assertTrue(path.exists(path.join(self.firstDestinationDirectory, 'test1.txt')))
+        self.assertTrue(path.exists(path.join(self.firstDestinationDirectory, 'test2.doc')))
 
     def test_InvalidSource(self) -> None:
 
@@ -72,6 +95,7 @@ class TestSorter(unittest.TestCase):
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test2.doc')))
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test3.jpg')))
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test4.pdf')))
+        self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test6.JPG')))
 
     def test_DuplicateHandling(self) -> None:
 
@@ -91,13 +115,14 @@ class TestSorter(unittest.TestCase):
         
 
         self.assertEqual(result['successCount'], 0)
-        self.assertEqual(result['failCount'], 4)
+        self.assertEqual(result['failCount'], 5)
         self.assertEqual(result['message'], 'Access denied for some files!')
 
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test1.txt')))
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test2.doc')))
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test3.jpg')))
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test4.pdf')))
+        self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test6.JPG')))
 
 
 # to run this use: python -m unittest Tests.testSorter
