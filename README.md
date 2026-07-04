@@ -11,10 +11,17 @@
 - **Automatic Sorting**: Redirect files to specific folders based on file type.
 - **Custom Rules**: Configure your own sorting criteria.
 
-## Works on:
+## Supported Platforms
 
-- Linux
-- Windows
+| Platform | Status |
+| --- | --- |
+| Linux | Supported |
+| Windows | Supported |
+| macOS | Not currently documented as supported |
+
+TidyCobra is a Python desktop app built with wxPython. Linux and Windows are the
+documented targets today; macOS may work if the dependencies install correctly,
+but it is not currently listed as an officially supported platform.
 
 ## Requirements
 
