@@ -19,9 +19,10 @@
 | Windows | Supported |
 | macOS | Not currently documented as supported |
 
-TidyCobra is a Python desktop app built with wxPython. Linux and Windows are the
-documented targets today; macOS may work if the dependencies install correctly,
-but it is not currently listed as an officially supported platform.
+> **Note:** TidyCobra is a Python desktop app built with wxPython. Linux and
+> Windows are the documented targets today; macOS may work if the dependencies
+> install correctly, but it is not currently listed as an officially supported
+> platform.
 
 ## Requirements
 
