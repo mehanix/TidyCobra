@@ -98,7 +98,26 @@ class TestSorter(unittest.TestCase):
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test2.doc')))
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test3.jpg')))
         self.assertTrue(path.exists(path.join(self.sourceDirectory, 'test4.pdf')))
+#new test added to check for move failures not losing files
+    @patch('Utils.sorter.move')
+    def test_MoveFailureDoesNotLoseFile(self, mockMove) -> None:
+        #simulates mid-operation write failure
+        mockMove.side_effect = IOError("Simulated mid-operation write failure")
 
+        #writes content to be checked again
+        test_file_path = path.join(self.sourceDirectory, 'test1.txt')
+        with open(test_file_path, 'w') as f:
+            f.write("Important Original Data")
+
+        #runs sorter
+        result: dict = sortFolderByExtensions(self.testRule)
+
+        self.assertEqual(result['successCount'], 0)
+        
+        #checking if original file still exists
+        self.assertTrue(path.exists(test_file_path), "CRITICAL ERROR: Source file was lost after failed move!")
+        with open(test_file_path, 'r') as f:
+            self.assertEqual(f.read(), "Important Original Data", "CRITICAL ERROR: File content was corrupted or cleared!")
 
 # to run this use: python -m unittest Tests.testSorter
 if __name__ == "__main__":

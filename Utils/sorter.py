@@ -62,7 +62,10 @@ def sortFolderByExtensions(rule: dict) -> dict:
         except PermissionError:
             message = "Access denied for some files!"
             failCount += 1
-
+        except OSError as e:
+            message = f"Failed to move some files: {str(e)}"
+            failCount += 1
+#new except added to the try-except block to handle OSError better and avoid corrupting files
     return {
         "successCount": successCount,
         "failCount": failCount,
