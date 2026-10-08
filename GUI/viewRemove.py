@@ -5,24 +5,28 @@ class RemoveRule(wx.Frame):
 
     def onBtnConfirm(self,event) -> None:
 
-        pub.sendMessage("removeRuleListener",id=self.id)
+        pub.sendMessage(
+            "removeFolderListener" if self.folder else "removeRuleListener",
+            id=self.id
+        )
         self.Destroy()
 
     def onBtnCancel(self,event) -> None:
 
         self.Destroy()
     
-    def __init__(self, id:int) -> None:
+    def __init__(self, id:int,folder:bool=False) -> None:
         wx.Frame.__init__(self, None, title="Remove rule", style=wx.DEFAULT_DIALOG_STYLE & ~wx.RESIZE_BORDER)
         self.panel = wx.Panel(self)
         self.id: int = id
+        self.folder: bool = folder
 
         '''Sizers'''
         self.vbox = wx.BoxSizer(wx.VERTICAL)
         self.operationsBox = wx.BoxSizer(wx.HORIZONTAL)
 
         '''Labels'''
-        self.message= wx.StaticText(self.panel, label="Are you sure you want to delete this role?")
+        self.message= wx.StaticText(self.panel, label=f"Are you sure you want to delete this {"folder" if self.folder else "rule"}?")
         self.vbox.Add(self.message, flag=wx.LEFT|wx.RIGHT|wx.TOP, border=10)
 
         '''Buttons'''
